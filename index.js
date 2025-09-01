@@ -1,14 +1,17 @@
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 import pino from "pino";
 import pinoPretty from "pino-pretty";
 import cors from "cors";
 import express from "express";
+import router from "./routers/venom_send_text.js";
 
-process = dotenv.config();
+dotenv.config();
+
 const app = express();
 app.use(express.json({ limit: "2mb" }));
 app.use(cors());
-const logger = pino(pinoPretty({ translateTime: "SYS:standard" }));
+app.use("/", router);
+export const logger = pino(pinoPretty({ translateTime: "SYS:standard" }));
 
 if (
   !process.env.GLPI_URL ||
@@ -18,3 +21,7 @@ if (
   logger.error("Configure GLPI_URL, GLPI_APP_TOKEN e GLPI_USER_TOKEN no .env");
   process.exit(1);
 }
+
+app.listen(process.env.PORT, () => {
+  logger.info(`Servidor rodando na porta ${process.env.PORT}`);
+});

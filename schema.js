@@ -8,4 +8,10 @@ const TicketSchema = z.object({
   requester_name: z.string().optional(),
   extra: z.record(z.any()).optional(),
 });
+
+export const textRequestSchema = z.object({
+  user: z.string().min(1, "O campo 'user' é obrigatório"),
+  text: z.string().min(1, "O campo 'text' é obrigatório"),
+});
+
 export { TicketSchema };
