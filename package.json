@@ -4,7 +4,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --loader ts-node/esm src/index.ts",
+    "dev": "node --loader ts-node/esm --watch src/index.ts",
+    "build": "tsc",
+    "serve": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +25,14 @@
   },
   "description": "",
   "devDependencies": {
-    "prisma": "^6.15.0"
+    "@types/axios": "^0.14.4",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "@types/pino": "^7.0.5",
+    "@types/pino-pretty": "^5.0.0",
+    "prisma": "^6.15.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }
