@@ -3,6 +3,7 @@ import { z } from "zod";
 import { sendTextToIA } from "../services/ia.js";
 import { logger } from "../index.js";
 import { textRequestSchema } from "../schema.js";
+import glpiCreateTicket from "../GLPI.js";
 
 const router = express.Router();
 
@@ -13,9 +14,11 @@ router.post("/venom/text", async (req, res) => {
     //lógica que envia para a ia
     const response = await sendTextToIA(text);
     logger.info(`Resposta da IA para ${user}: ${response}`);
+    const newTicket = JSON.parse(response);
+    newTicket = { ...newTicket, requester_name: user }; //adiciona o nome do usuário que enviou a mensagem
 
     //lógica que envia para o glpi
-    const glpiResponse = await sendToGLPI(response);
+    const glpiResponse = await glpiCreateTicket(newTicket);
     logger.info(`Resposta do GLPI para ${user}: ${glpiResponse}`);
 
     res.json({ response });
