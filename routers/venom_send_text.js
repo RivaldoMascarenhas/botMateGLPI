@@ -9,10 +9,14 @@ const router = express.Router();
 router.post("/venom/text", async (req, res) => {
   try {
     const { user, text } = textRequestSchema.parse(req.body);
-    logger.info(`Recebida mensagem de ${user}: ${text}`);
-
+    logger.info(`Recebida mensagem vinda do bot. ${user}: ${text}`);
+    //lógica que envia para a ia
     const response = await sendTextToIA(text);
     logger.info(`Resposta da IA para ${user}: ${response}`);
+
+    //lógica que envia para o glpi
+    const glpiResponse = await sendToGLPI(response);
+    logger.info(`Resposta do GLPI para ${user}: ${glpiResponse}`);
 
     res.json({ response });
   } catch (error) {

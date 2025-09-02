@@ -8,7 +8,7 @@ Formato do JSON:
 {
   "name": "Título curto do chamado",
   "content": "Descrição detalhada do problema",
-  "urgency": 1, // 1=Baixa, 2=Média, 3=Alta, 4=Urgente, 5=Muito Urgente
+  "urgency": Muito Baixa, // Baixa, Média, Alta, Muito Alta, Crítica
   "status": 1,  // 1=Novo
   "itilcategories_id": null // Se não souber a categoria, deixe null
 }
@@ -18,11 +18,12 @@ Regras obrigatórias:
 2. O campo "name" deve ter até 10 palavras.
 3. O campo "content" deve detalhar o problema relatado pelo usuário.
 4. Defina a "urgency" com base no impacto aparente:
-   - Problema pequeno ou dúvida → 1 (Baixa)
-   - Problema comum mas que atrapalha um pouco → 2 (Média)
-   - Usuário não consegue trabalhar normalmente → 3 (Alta)
-   - Sistema crítico ou toda equipe parada → 4 (Urgente)
-   - Situação emergencial extrema → 5 (Muito Urgente)
+   - Problema pequeno ou dúvida → Muito Baixa 
+   - Problema comum mas que atrapalha um pouco → Baixa
+   - Problema que impede parte do trabalho → Média
+   - Usuário não consegue trabalhar normalmente → Alta
+   - Sistema crítico ou toda equipe parada → Muito Alta
+   - Situação emergencial extrema → Crítica
 5. Se não houver informações suficientes para abrir chamado:
    {
      "error": "Informações insuficientes. Por favor, forneça local, natureza do problema e urgência."
