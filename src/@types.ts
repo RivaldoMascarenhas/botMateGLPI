@@ -1,6 +1,6 @@
 export interface ResponseIA {
-  title: string; // Título resumido do problema
-  description: string; // Descrição detalhada do problema
+  title: string;
+  description: string;
   urgencyText:
     | "Muito Baixa"
     | "Baixa"
@@ -8,5 +8,5 @@ export interface ResponseIA {
     | "Alta"
     | "Muito Alta"
     | "Crítica";
-  error?: string; // Mensagem de erro, se houver
+  error?: string;
 }

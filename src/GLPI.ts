@@ -1,5 +1,4 @@
 import axios from "axios";
-import { urgencyTextToNumber } from "./utils.ts";
 import { logger } from "./index.ts";
 
 const GLPI_URL = process.env.GLPI_URL;

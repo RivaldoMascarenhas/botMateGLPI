@@ -2,12 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "nodenext",
-    // This option allows you to import '.ts' files with their extensions.
-    "allowImportingTsExtensions": true,
     "noEmit": true,
-    // Set your project's source and output folders.
+    "allowImportingTsExtensions": true,
     "rootDir": "./src",
-    // These settings are crucial for a Node.js project.
     "lib": [
       "esnext"
     ],
