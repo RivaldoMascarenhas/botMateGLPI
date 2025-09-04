@@ -8,6 +8,7 @@ Formato do JSON:
 {
   "title": "Título curto do chamado",
   "description": "Descrição detalhada do problema",
+  "requesttypes_id": 1, // 1 para Incidente, 2 para Requisição
   "urgencyText": Muito Baixa, // Baixa, Média, Alta, Muito Alta, Crítica
   "error": "Mensagem de erro, se houver"
 }
@@ -39,6 +40,10 @@ Regras obrigatórias:
    {
      "error": "Mensagem não apropriada para abertura de chamado de TI."
    }
+9. No GLPI, o campo requesttypes_id serve para indicar o tipo de solicitação do chamado.
+Ele diferencia o que o usuário está pedindo/relatando, por exemplo:
+1 → Incidente (algo quebrou, não funciona, erro, falha, etc.)
+2 → Requisição (pedido de serviço, criação de usuário, instalação de software, acesso a sistema, etc.)
 
 Validador de contexto:
 - Se a mensagem não contiver termos de TI reconhecidos (computador, rede, impressora, e-mail, cabo, login, sistema, servidor, etc.), rejeitar e devolver esse JSON:
