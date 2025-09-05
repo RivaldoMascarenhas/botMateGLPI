@@ -1,15 +1,18 @@
 import axios from "axios";
-import { logger } from "./index.ts";
-import type { initSessionResponse, ResponseIA } from "./@types.ts";
-import { urgencyTextToNumber } from "./utils.ts";
-import { time } from "console";
+import { logger } from "./index.js";
+import type {
+  createTicketResponse,
+  initSessionResponse,
+  ResponseIA,
+} from "./@types.ts";
+import { urgencyTextToNumber } from "./utils.js";
 
 const GLPI_URL = process.env.GLPI_URL;
 const GLPI_APP_TOKEN = process.env.GLPI_APP_TOKEN;
 const GLPI_USER_TOKEN = process.env.GLPI_USER_TOKEN;
 const TIMEOUT = 20000;
-const CATEGORY = process.env.GLPI_DEFAULT_CATEGORY_ID || 13;
-const ENTITY = process.env.GLPI_DEFAULT_ENTITY_ID || 1;
+const CATEGORY = process.env.GLPI_DEFAULT_CATEGORY_ID || 28;
+const ENTITY = process.env.GLPI_DEFAULT_ENTITY_ID || 5;
 
 async function glpiInitSession() {
   const { data } = await axios.get<initSessionResponse>(
@@ -75,30 +78,33 @@ export async function glpiCreateTicket(newTicket: ResponseIA) {
   }
   try {
     let userId = null;
-    if (newTicket.userResquest) {
-      userId = await findUserIdByName(sessionToken, newTicket.userResquest);
+    if (newTicket.userRequest) {
+      userId = await findUserIdByName(sessionToken, newTicket.userRequest);
     }
     if (!userId) {
       logger.warn(
-        `⚠️ Não foi possível encontrar o usuário "${newTicket.userResquest}". O ticket será criado sem solicitante.`
+        `⚠️ Não foi possível encontrar o usuário "${newTicket.userRequest}". O ticket será criado sem solicitante.`
       );
     }
     const urgencyNumber = urgencyTextToNumber(newTicket.urgencyText);
+    const ticketInput = {
+      name: newTicket.title,
+      content: newTicket.description,
+      itilcategories_id: Number(CATEGORY),
+      requesttypes_id: newTicket.requesttypes_id,
+      urgency: urgencyNumber,
+      impact: urgencyNumber,
+      priority: urgencyNumber,
+      entities_id: Number(ENTITY),
+      _users_id_requester: userId,
+      _users_id_observer: 164,
+    };
+    logger.info(`📝 Criando ticket no GLPI: ${JSON.stringify(ticketInput)}`);
 
-    const { data } = await axios.post(
-      `${GLPI_URL}/createTicket`,
+    const { data } = await axios.post<createTicketResponse>(
+      `${GLPI_URL}/Ticket`,
       {
-        input: {
-          name: newTicket.title,
-          content: newTicket.description,
-          itilcategories_id: CATEGORY,
-          requesttypes_id: newTicket.requesttypes_id,
-          urgency: urgencyNumber,
-          impact: urgencyNumber,
-          priority: urgencyNumber,
-          entities_id: ENTITY,
-          _users_id_requester: userId || undefined,
-        },
+        input: ticketInput,
       },
       {
         headers: {
@@ -113,7 +119,11 @@ export async function glpiCreateTicket(newTicket: ResponseIA) {
     await glpiKillSession(sessionToken);
     return data;
   } catch (error: any) {
-    logger.error("❌ Erro ao criar ticket:", error.message);
+    if (axios.isAxiosError(error) && error.response) {
+      logger.error("❌ Erro do GLPI:", error.response.data);
+    } else {
+      logger.error("❌ Erro ao criar ticket:", error.message);
+    }
     await glpiKillSession(sessionToken);
     return null;
   }
