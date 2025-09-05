@@ -9,7 +9,7 @@ export interface ResponseIA {
     | "Alta"
     | "Muito Alta"
     | "Crítica";
-  userResquest?: string;
+  userRequest?: string;
   error?: string;
 }
 export interface initSessionResponse {
@@ -17,9 +17,5 @@ export interface initSessionResponse {
 }
 export interface createTicketResponse {
   id: number;
-  name: string;
-  content: string;
-  urgency: number;
-  status: number;
-  users_id_recipient: number;
+  message: string;
 }
