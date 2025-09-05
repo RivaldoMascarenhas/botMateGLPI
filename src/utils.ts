@@ -1,3 +1,6 @@
+import { PrismaClient } from "@prisma/client";
+
+export const prisma = new PrismaClient();
 export function urgencyTextToNumber(txt: string) {
   if (!txt) return 3;
   const t = txt.toString().toLowerCase();

@@ -12,7 +12,7 @@ const TicketSchema = z.object({
 const textRequestSchema = z.object({
   user: z.string().min(1, "O campo 'user' é obrigatório"),
   text: z.string().min(1, "O campo 'text' é obrigatório"),
-  phone: z.string().optional(),
+  phone: z.number().optional(),
 });
 
 export { TicketSchema, textRequestSchema };
