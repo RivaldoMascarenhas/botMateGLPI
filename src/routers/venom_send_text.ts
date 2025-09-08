@@ -6,6 +6,7 @@ import { sendTextToIA } from "../services/ia.js";
 import type { ResponseIA } from "../@types.ts";
 import { glpiCreateTicket } from "../GLPI.js";
 import { prisma } from "../utils.js";
+import { log } from "console";
 
 const venomRouter = express.Router();
 
@@ -49,6 +50,7 @@ venomRouter.post("/venom/ticket", async (req, res) => {
     }
     let parsedResponse: ResponseIA = JSON.parse(responseIA);
     if (parsedResponse.error) {
+      logger.error(`mensagem de erro: ${parsedResponse.error}`);
       res.status(400).json(parsedResponse);
       return;
     }
@@ -71,7 +73,15 @@ venomRouter.post("/venom/ticket", async (req, res) => {
         phone: String(phone),
       },
     });
-
+    logger.info(
+      `Ticket salvo no banco de dados:  ${String(savedTicket.glpiTicketId)}`
+    );
+    if (!savedTicket) {
+      res
+        .status(500)
+        .json({ error: "Erro ao salvar ticket no banco de dados" });
+      return;
+    }
     res
       .status(201)
       .json({ ...parsedResponse, glpiTicketId: responseGLPI.id, phone });
