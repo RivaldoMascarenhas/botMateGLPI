@@ -1,0 +1,21 @@
+{
+  "name": "zap-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/connect-timeout": "^1.9.0",
+    "@types/cors": "^2.8.19",
+    "compression": "^1.8.1",
+    "connect-timeout": "^1.9.1",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0"
+  }
+}

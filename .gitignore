@@ -1,0 +1,11 @@
+glpi-service/node_modules/
+glpi-service/dist/
+glpi-service/.env
+glpi-service/.env.local
+glpi-service/.env.*.local
+logs/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
