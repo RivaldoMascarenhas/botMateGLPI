@@ -26,3 +26,14 @@ zap-service/session/session/Default
 zap-service/.idea/
 zap-service/.wwebjs_cache/
 
+# Arquivos de cache / sessão
+*.log
+*.ldb
+*.db
+*.old
+MANIFEST-*
+Cookies
+QuotaManager
+data_*
+LOG*
+the-real-index
