@@ -22,5 +22,7 @@ zap-service/.DS_Store
 zap-service/Thumbs.db
 zap-service/.vscode/
 zap-service/session
+zap-service/session/session/Default
 zap-service/.idea/
+zap-service/.wwebjs_cache/
 
