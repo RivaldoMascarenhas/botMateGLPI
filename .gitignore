@@ -21,6 +21,6 @@ zap-service/*.log
 zap-service/.DS_Store
 zap-service/Thumbs.db
 zap-service/.vscode/
-zap-service/tokens
+zap-service/session
 zap-service/.idea/
 
