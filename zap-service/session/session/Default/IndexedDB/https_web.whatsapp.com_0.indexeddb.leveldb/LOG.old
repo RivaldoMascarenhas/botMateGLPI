@@ -1,0 +1,23 @@
+2025/09/09-18:43:22.401 70c0 Reusing MANIFEST C:\Users\Rivaldo\Desktop\PROJETOS\botMateGLPI\zap-service\session\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/09/09-18:43:22.401 70c0 Recovering log #627
+2025/09/09-18:43:22.470 70c0 Reusing old log C:\Users\Rivaldo\Desktop\PROJETOS\botMateGLPI\zap-service\session\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000627.log 
+2025/09/09-18:43:24.122 3874 Level-0 table #637: started
+2025/09/09-18:43:24.141 3874 Level-0 table #637: 639564 bytes OK
+2025/09/09-18:43:24.142 3874 Delete type=0 #627
+2025/09/09-18:43:24.146 3874 Manual compaction at level-0 from '\x00e\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00f\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/09/09-18:43:25.925 3fe0 Compacting 1@1 + 6@2 files
+2025/09/09-18:43:26.037 3fe0 Generated table #638@1: 88364 keys, 2238442 bytes
+2025/09/09-18:43:26.157 3fe0 Generated table #639@1: 64501 keys, 2227589 bytes
+2025/09/09-18:43:26.257 3fe0 Generated table #640@1: 16552 keys, 2173734 bytes
+2025/09/09-18:43:26.333 3fe0 Generated table #641@1: 28356 keys, 2208207 bytes
+2025/09/09-18:43:26.450 3fe0 Generated table #642@1: 80422 keys, 2225819 bytes
+2025/09/09-18:43:26.488 3fe0 Generated table #643@1: 31936 keys, 666607 bytes
+2025/09/09-18:43:26.488 3fe0 Compacted 1@1 + 6@2 files => 11740398 bytes
+2025/09/09-18:43:26.489 3fe0 compacted to: files[ 0 0 6 0 0 0 0 ]
+2025/09/09-18:43:26.489 3fe0 Delete type=2 #629
+2025/09/09-18:43:26.489 3fe0 Delete type=2 #630
+2025/09/09-18:43:26.489 3fe0 Delete type=2 #631
+2025/09/09-18:43:26.489 3fe0 Delete type=2 #632
+2025/09/09-18:43:26.489 3fe0 Delete type=2 #633
+2025/09/09-18:43:26.489 3fe0 Delete type=2 #634
+2025/09/09-18:43:26.489 3fe0 Delete type=2 #637

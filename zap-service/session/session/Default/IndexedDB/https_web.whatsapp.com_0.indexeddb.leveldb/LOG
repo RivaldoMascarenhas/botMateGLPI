@@ -1,0 +1,4 @@
+2025/09/09-18:43:42.205 4094 Reusing MANIFEST C:\Users\Rivaldo\Desktop\PROJETOS\botMateGLPI\zap-service\session\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/09/09-18:43:42.205 4094 Recovering log #636
+2025/09/09-18:43:42.256 4094 Reusing old log C:\Users\Rivaldo\Desktop\PROJETOS\botMateGLPI\zap-service\session\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000636.log 
+2025/09/09-18:43:43.801 4094 Manual compaction at level-0 from '\x00f\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00g\x00\x00\x00' @ 0 : 0; will stop at (end)
