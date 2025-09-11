@@ -13,10 +13,10 @@ venomRouter.post("/ticket", async (req, res) => {
   try {
     const body = req.body;
     const { phone, text, user } = textRequestSchema.parse(body);
-    logger.info(`Recebido texto de ${phone}: ${text}`);
+    logger.info(`Recebido texto de ${phone} - ${user}: ${text}`);
 
-    // Cooldown de 10 minutos
-    const cooldownMinutes = 10;
+    // Cooldown de 5 minutos
+    const cooldownMinutes = 5;
     const lastTicket = await prisma.ticket.findFirst({
       where: { phone: String(phone) },
       orderBy: { createdAt: "desc" },
@@ -54,28 +54,33 @@ venomRouter.post("/ticket", async (req, res) => {
       return;
     }
 
-    parsedResponse = { ...parsedResponse, userRequest: user };
-
     const responseGLPI = await glpiCreateTicket(parsedResponse);
     if (!responseGLPI) {
       res.status(500).json({ error: "Erro ao criar chamado no GLPI" });
       return;
     }
-    const savedTicket = await prisma.ticket.create({
-      data: {
-        title: parsedResponse.title,
-        description: parsedResponse.description,
-        requesttypes_id: parsedResponse.requesttypes_id,
-        urgencyText: parsedResponse.urgencyText,
-        userRequest: parsedResponse.userRequest,
-        glpiTicketId: responseGLPI.id,
-        phone: String(phone),
-      },
-    });
-    logger.info(
-      `Ticket salvo no banco de dados:  ${String(savedTicket.glpiTicketId)}`
-    );
-    if (!savedTicket) {
+    if (responseGLPI.error) {
+      logger.error(`Erro ao criar chamado no GLPI: ${responseGLPI.error}`);
+      res.status(500).json({ error: "Erro ao criar chamado no GLPI" });
+      return;
+    }
+    try {
+      const savedTicket = await prisma.ticket.create({
+        data: {
+          title: parsedResponse.title,
+          description: parsedResponse.description,
+          requesttypes_id: 4, //whatsapp
+          urgencyText: parsedResponse.urgencyText,
+          userRequest: parsedResponse.userRequest,
+          glpiTicketId: responseGLPI.id,
+          phone: String(phone),
+        },
+      });
+      logger.info(
+        `Ticket salvo no banco de dados:  ${String(savedTicket.glpiTicketId)}`
+      );
+    } catch (error: any) {
+      logger.error("Erro ao salvar ticket no banco de dados:", error);
       res
         .status(500)
         .json({ error: "Erro ao salvar ticket no banco de dados" });
