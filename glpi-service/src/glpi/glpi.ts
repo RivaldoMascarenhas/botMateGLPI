@@ -14,29 +14,25 @@ import {
   glpiInitSession,
   glpiKillSession,
 } from "./funcoes";
-import { response } from "express";
 
 // Cria um ticket no GLPI
 export async function glpiCreateTicket(newTicket: ResponseIA): Promise<any> {
   const sessionToken = await glpiInitSession();
   if (!sessionToken) {
-    logger.error("❌ Falha ao iniciar sessão no GLPI");
-    return response
-      .status(500)
-      .json({ error: "Falha ao iniciar sessão no GLPI" });
+    return { error: "❌ Falha ao iniciar sessão no GLPI" };
   }
   try {
-    let userId = null;
-    if (newTicket.userRequest) {
-      userId = await findUserIdByFullName(sessionToken, newTicket.userRequest);
-    }
-    if (!userId) {
-      logger.warn(
-        `⚠️ Não foi possível encontrar o usuário "${newTicket.userRequest}". O ticket será criado sem solicitante.`
-      );
+    const userId = await findUserIdByFullName(
+      sessionToken,
+      newTicket.userRequest
+    );
 
-      return response.status(500).json({ error: "Usuário desconhecido" });
+    if (!userId) {
+      return {
+        error: `Não foi possível encontrar o usuário no GLPI: ${newTicket.userRequest}`,
+      };
     }
+
     const urgencyNumber = urgencyTextToNumber(newTicket.urgencyText);
     const ticketInput = {
       name: newTicket.title,
@@ -72,6 +68,7 @@ export async function glpiCreateTicket(newTicket: ResponseIA): Promise<any> {
   } catch (error: any) {
     if (axios.isAxiosError(error) && error.response) {
       logger.error("❌ Erro do GLPI:", error.response.data);
+      return null;
     } else {
       logger.error("❌ Erro ao criar ticket:", error);
     }
