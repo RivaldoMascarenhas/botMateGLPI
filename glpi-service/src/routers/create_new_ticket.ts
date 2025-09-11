@@ -60,8 +60,8 @@ venomRouter.post("/ticket", async (req, res) => {
       return;
     }
     if (responseGLPI.error) {
-      logger.error(`Erro ao criar chamado no GLPI: ${responseGLPI.error}`);
-      res.status(500).json({ error: "Erro ao criar chamado no GLPI" });
+      logger.error(`❌Erro ao criar chamado no GLPI: ${responseGLPI.error}`);
+      res.status(500).json({ error: responseGLPI.error });
       return;
     }
     try {
