@@ -78,7 +78,7 @@ client.on("message", async (msg) => {
       await client.sendMessage(sender, messageSucess);
     } catch (error: any) {
       console.error(error.response?.data?.error || error.message);
-      const message = `❌ Erro ao criar chamado: ${
+      const message = `❌ ${
         error.response?.data?.error || "Erro desconhecido"
       }`;
       await client.sendMessage(sender, message);
