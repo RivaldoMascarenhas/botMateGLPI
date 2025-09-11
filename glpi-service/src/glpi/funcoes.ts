@@ -10,20 +10,33 @@ import { initSessionResponse } from "../@types";
 
 // Inicia uma sessão no GLPI
 export async function glpiInitSession() {
-  const { data } = await axios.get<initSessionResponse>(
-    `${GLPI_URL}/initSession`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        "App-Token": GLPI_APP_TOKEN,
-        Authorization: `Basic ${GLPI_USER_TOKEN}`,
-        "User-Agent":
-          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-      },
-      timeout: Number(TIMEOUT),
+  try {
+    const { data } = await axios.get<initSessionResponse>(
+      `${GLPI_URL}/initSession`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "App-Token": GLPI_APP_TOKEN,
+          Authorization: `Basic ${GLPI_USER_TOKEN}`,
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
+        },
+        timeout: Number(TIMEOUT),
+      }
+    );
+
+    return data?.session_token;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        "Erro ao iniciar sessão GLPI:",
+        error.response?.data || error.message
+      );
+    } else {
+      console.error("Erro inesperado ao iniciar sessão GLPI:", error);
     }
-  );
-  return data?.session_token;
+    return null;
+  }
 }
 
 export async function glpiKillSession(sessionToken: string) {
@@ -41,7 +54,7 @@ export async function glpiKillSession(sessionToken: string) {
 
 // Busca o ID do usuário pelo nome
 export async function findUserIdByFullName(session: string, fullname: string) {
-  const [firstname, lastname] = fullname.split(" ");
+  const [firstname, lastname] = fullname.toLowerCase().split(".");
   const encodedFirstname = encodeURIComponent(firstname);
   const encodedLastname = encodeURIComponent(lastname);
 
@@ -63,8 +76,10 @@ export async function findUserIdByFullName(session: string, fullname: string) {
       const first = user["9"];
       const last = user["34"];
 
-      logger.debug(`✅ Usuário encontrado: ${first} ${last} -> ID ${userId}`);
-      return { id: userId, login, email, firstname: first, lastname: last };
+      logger.info(
+        `✅ Usuário encontrado: ${first} ${last} -> ID ${userId}, Login: ${login}, Email: ${email}`
+      );
+      return userId;
     }
 
     logger.warn(`⚠️ Nenhum usuário encontrado com nome: ${fullname}`);
