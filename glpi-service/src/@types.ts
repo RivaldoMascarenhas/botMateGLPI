@@ -2,6 +2,7 @@ export interface ResponseIA {
   title: string;
   description: string;
   requesttypes_id: number;
+  impact: number;
   urgencyText:
     | "Muito Baixa"
     | "Baixa"
