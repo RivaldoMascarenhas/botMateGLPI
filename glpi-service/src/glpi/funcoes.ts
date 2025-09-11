@@ -40,9 +40,12 @@ export async function glpiKillSession(sessionToken: string) {
 }
 
 // Busca o ID do usuário pelo nome
-export async function findUserIdByName(session: string, name: string) {
-  const encodedName = encodeURIComponent(name);
-  const url = `${GLPI_URL}/search/User?criteria[0][field]=9&criteria[0][searchtype]=contains&criteria[0][value]=${encodedName}&forcedisplay[0]=2`;
+export async function findUserIdByFullName(session: string, fullname: string) {
+  const [firstname, lastname] = fullname.split(" ");
+  const encodedFirstname = encodeURIComponent(firstname);
+  const encodedLastname = encodeURIComponent(lastname);
+
+  const url = `${GLPI_URL}/search/User?criteria[0][field]=9&criteria[0][searchtype]=contains&criteria[0][value]=${encodedFirstname}&criteria[1][link]=AND&criteria[1][field]=34&criteria[1][searchtype]=contains&criteria[1][value]=${encodedLastname}&forcedisplay[0]=1&forcedisplay[1]=2&forcedisplay[2]=5&forcedisplay[3]=9&forcedisplay[4]=34`;
 
   try {
     const { data } = await axios.get(url, {
@@ -53,15 +56,21 @@ export async function findUserIdByName(session: string, name: string) {
     });
 
     if (data?.data?.length > 0) {
-      const userId = data.data[0][2]; // geralmente coluna [2] = ID
-      logger.debug(`✅ Usuário encontrado: ${name} -> ID ${userId}`);
-      return userId;
+      const user = data.data[0];
+      const userId = user["2"];
+      const login = user["1"];
+      const email = user["5"];
+      const first = user["9"];
+      const last = user["34"];
+
+      logger.debug(`✅ Usuário encontrado: ${first} ${last} -> ID ${userId}`);
+      return { id: userId, login, email, firstname: first, lastname: last };
     }
 
-    logger.warn(`⚠️ Nenhum usuário encontrado com nome: ${name}`);
+    logger.warn(`⚠️ Nenhum usuário encontrado com nome: ${fullname}`);
     return null;
   } catch (error: any) {
-    logger.error(`❌ Erro ao buscar usuário "${name}":`, error.message);
+    logger.error(`❌ Erro ao buscar usuário "${fullname}":`, error.message);
     return null;
   }
 }
