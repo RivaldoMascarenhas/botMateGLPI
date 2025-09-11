@@ -11,9 +11,10 @@ export function message(response: ResponseIA) {
 📢 Nossa equipe de *Suporte de TI* entrará em contato em breve.`;
 }
 export function infoCreateTicket(name: string) {
-  const message = `👋 Olá, ${name}! Para abrir um chamado:  
+  const message = `👋 Olá, ${name}! Para abrir um chamado: 
+   
 📝 Escreva **chamado**  
-🙋 Informe seu **nome no GLPI**  
+🙋 Informe seu **usuário do AD ou do GLPI**  
 ⚠️ Descreva o **problema**  
 
 📌 Exemplos:  
@@ -21,7 +22,7 @@ export function infoCreateTicket(name: string) {
 - "Suporte na sala 2H, datashow não liga.**SEU NOME**. Abrir chamado." 
 - "**SEU NOME** Meu PC não liga. Chamado. " 
 
-**SEU NOME** = Ex: João Silva 
+**SEU NOME** = Ex: João.Silva 
 
 💡 A ordem não importa, o sistema envia automaticamente. 🚀`;
   return message;
