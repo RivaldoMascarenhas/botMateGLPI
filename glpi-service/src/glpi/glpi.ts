@@ -9,33 +9,42 @@ import {
   logger,
   TIMEOUT,
 } from "../index";
-import { findUserIdByName, glpiInitSession, glpiKillSession } from "./funcoes";
+import {
+  findUserIdByFullName,
+  glpiInitSession,
+  glpiKillSession,
+} from "./funcoes";
+import { response } from "express";
 
 // Cria um ticket no GLPI
-export async function glpiCreateTicket(newTicket: ResponseIA) {
+export async function glpiCreateTicket(newTicket: ResponseIA): Promise<any> {
   const sessionToken = await glpiInitSession();
   if (!sessionToken) {
     logger.error("❌ Falha ao iniciar sessão no GLPI");
-    return null;
+    return response
+      .status(500)
+      .json({ error: "Falha ao iniciar sessão no GLPI" });
   }
   try {
     let userId = null;
     if (newTicket.userRequest) {
-      userId = await findUserIdByName(sessionToken, newTicket.userRequest);
+      userId = await findUserIdByFullName(sessionToken, newTicket.userRequest);
     }
     if (!userId) {
       logger.warn(
         `⚠️ Não foi possível encontrar o usuário "${newTicket.userRequest}". O ticket será criado sem solicitante.`
       );
+
+      return response.status(500).json({ error: "Usuário desconhecido" });
     }
     const urgencyNumber = urgencyTextToNumber(newTicket.urgencyText);
     const ticketInput = {
       name: newTicket.title,
       content: newTicket.description,
       itilcategories_id: Number(CATEGORY_ID),
-      requesttypes_id: newTicket.requesttypes_id,
+      requesttypes_id: 4, // 4 = Whatsapp
       urgency: urgencyNumber,
-      impact: urgencyNumber,
+      impact: newTicket.impact,
       priority: urgencyNumber,
       entities_id: Number(ENTITY_ID),
       _users_id_requester: userId,
@@ -64,7 +73,7 @@ export async function glpiCreateTicket(newTicket: ResponseIA) {
     if (axios.isAxiosError(error) && error.response) {
       logger.error("❌ Erro do GLPI:", error.response.data);
     } else {
-      logger.error("❌ Erro ao criar ticket:", error.message);
+      logger.error("❌ Erro ao criar ticket:", error);
     }
     await glpiKillSession(sessionToken);
     return null;
