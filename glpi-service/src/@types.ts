@@ -10,7 +10,7 @@ export interface ResponseIA {
     | "Alta"
     | "Muito Alta"
     | "Crítica";
-  userRequest?: string;
+  userRequest: string;
   error?: string;
 }
 export interface initSessionResponse {
