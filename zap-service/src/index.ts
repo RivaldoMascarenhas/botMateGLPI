@@ -49,21 +49,24 @@ client.on("message", async (msg) => {
     contact?.name?.split(" ")[0] ||
     `${sender.replace("@c.us", "")}`;
 
+  // se o nome for inválido, usa o telefone
   if (!isValidName(name)) {
     name = sender.replace("@c.us", "").replace("55", "");
   }
 
+  // verifica se a mensagem contém "chamado" e responde com o template de como criar um chamado
   if (text.toLowerCase().includes("chamado") && text.length == 7) {
     await client.sendMessage(sender, infoCreateTicket(name));
   }
-
+  //
   if (text.toLowerCase().includes("chamado") && text.length > 7) {
+    await client.sendMessage(sender, "📩 Enviando para o GLPI API...");
     console.log(`📩 Mensagem recebida de ${name}: ${msg.body}`);
-    console.log(`📩 Enviando mensagem para o backend...`);
+    console.log(`📩 Enviando mensagem para o GLPI API...`);
 
     try {
       const response = await axios.post<ResponseIA>(
-        "http://localhost:4000/glpi/ticket",
+        "http://localhost:5001/ticket",
         {
           user: name,
           phone: Number(sender.replace("@c.us", "")),

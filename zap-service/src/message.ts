@@ -5,7 +5,7 @@ export function message(response: ResponseIA) {
 
 👤 *Solicitante:* ${response.userRequest || "Usuário"}  
 📝 *Título:* ${response.title}  
-⚠️ *Urgência:* ${response.urgencyText}  
+📝 *Descrição:* ${response.description} 
 📞 *Ramal:* 139  
 
 📢 Nossa equipe de *Suporte de TI* entrará em contato em breve.`;
