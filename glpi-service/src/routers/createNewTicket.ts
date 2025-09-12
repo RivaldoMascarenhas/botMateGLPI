@@ -15,8 +15,8 @@ venomRouter.post("/ticket", async (req, res) => {
     const { phone, text, user } = textRequestSchema.parse(body);
     logger.info(`Recebido texto de ${phone} - ${user}: ${text}`);
 
-    // Cooldown de 5 minutos
-    const cooldownMinutes = 5;
+    // Cooldown de 1 minutos
+    const cooldownMinutes = 1;
     const lastTicket = await prisma.ticket.findFirst({
       where: { phone: String(phone) },
       orderBy: { createdAt: "desc" },
