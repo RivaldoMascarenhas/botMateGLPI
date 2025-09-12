@@ -25,6 +25,6 @@ app.use(
 );
 
 // ------------------- SERVIDOR -------------------
-app.listen(PORT, () => {
-  console.log(`Proxy rodando em http://localhost:${PORT}`);
+app.listen(PORT, "10.1.11.136", () => {
+  console.log(`Proxy rodando em http://10.1.11.136:${PORT}`);
 });
