@@ -3,10 +3,11 @@ import pino from "pino";
 import pinoPretty from "pino-pretty";
 import cors from "cors";
 import express from "express";
-import venomRouter from "./routers/create_new_ticket";
+import venomRouter from "./routers/createNewTicket";
 import helmet from "helmet";
 import compression from "compression";
 import timeout from "connect-timeout";
+import { CheckUpdateTickets } from "./checkUpdate";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ if (!GLPI_URL || !GLPI_APP_TOKEN || !GLPI_USER_TOKEN || !GEMINI_API_KEY) {
   );
   process.exit(1);
 }
+CheckUpdateTickets();
 
 app.listen(PORT, () => {
   logger.info(`Servidor rodando na porta ${PORT}`);
