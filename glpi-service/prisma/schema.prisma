@@ -9,12 +9,15 @@ generator client {
 
 model Ticket {
   id              Int      @id @default(autoincrement())
+  glpiTicketId    Int      @unique
   title           String
   description     String
   requesttypes_id Int
   urgencyText     String
   userRequest     String?
-  glpiTicketId    Int
+  dateMod         String?
+  status          Int?
   phone           String
   createdAt       DateTime @default(now())
+  isClosed        Boolean  @default(false) // <- novo campo
 }
