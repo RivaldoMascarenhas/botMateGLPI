@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  glpi-service:
+    build: ./glpi-service
+    container_name: glpi-service
+    ports:
+      - "${GLPI_PORT:-5001}:5001"
+    env_file:
+      - ./glpi-service/.env
+    restart: unless-stopped
+
+  proxy:
+    build: ./proxy
+    container_name: proxy-service
+    ports:
+      - "${PROXY_PORT:-4000}:4000"
+    restart: unless-stopped
+    depends_on:
+      - glpi-service
+      - zap-service
+
+  zap-service:
+    build: ./zap-service
+    container_name: zap-service
+    ports:
+      - "${ZAP_PORT:-5002}:5002"
+    env_file:
+      - ./zap-service/.env
+    restart: unless-stopped

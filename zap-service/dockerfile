@@ -1,0 +1,41 @@
+# -----------------------------
+# Etapa 1 - Build (TypeScript)
+# -----------------------------
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copiar apenas arquivos de dependência para otimizar cache
+COPY package*.json tsconfig.json ./
+
+# Instalar dependências (usa lockfile pra garantir versões iguais)
+RUN npm install --frozen-lockfile
+
+# Copiar código fonte
+COPY ./src ./src
+
+# Compilar TypeScript
+RUN npm run build
+
+
+# -----------------------------
+# Etapa 2 - Runtime (Imagem final)
+# -----------------------------
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Variáveis de ambiente padrão
+ENV NODE_ENV=production \
+  PORT=5002
+
+# Copiar apenas o necessário do build
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+
+# Expor a porta
+EXPOSE $PORT
+
+# Rodar o app
+CMD ["node", "dist/index.js"]
