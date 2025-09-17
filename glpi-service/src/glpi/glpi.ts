@@ -41,6 +41,7 @@ export async function glpiCreateTicket(newTicket: ResponseIA): Promise<any> {
       requesttypes_id: 4, // 4 = Whatsapp
       urgency: urgencyNumber,
       impact: newTicket.impact,
+      locations_id: 8,
       priority: urgencyNumber,
       entities_id: Number(ENTITY_ID),
       _users_id_requester: userId,

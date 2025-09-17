@@ -75,7 +75,7 @@ export function buildTicketMessage(
     message: `⚠️ Chamado *${ticket.glpiTicketId}* foi alterado! ⚠️
 
 📌 *Título:* ${ticket.title}
-🔔 *Status:* ** *${getStatusText(status)}* ${statusEmoji} **
+🔔 *Status:*  *${getStatusText(status)}* ${statusEmoji} 
 
 🕒 *Última modificação:* ${formatDate(dateMod)}`,
     number: ticket.phone,

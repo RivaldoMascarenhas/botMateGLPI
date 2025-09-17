@@ -60,7 +60,7 @@ client.on("message", async (msg) => {
   }
   //
   if (text.toLowerCase().includes("chamado") && text.length > 7) {
-    await client.sendMessage(sender, "📩 Enviando para o GLPI API...");
+    await client.sendMessage(sender, "📩 Enviando para o GLPI...");
     console.log(`📩 Mensagem recebida de ${name}: ${msg.body}`);
     console.log(`📩 Enviando mensagem para o GLPI API...`);
 
